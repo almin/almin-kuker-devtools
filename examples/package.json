@@ -18,10 +18,10 @@
   "author": "azu",
   "license": "MIT",
   "dependencies": {
-    "almin": "^0.10.0",
-    "react": "^15.0.1",
-    "react-dom": "^15.0.1",
-    "uuid": "^2.0.2"
+    "almin": "^0.15.2",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "uuid": "^3.2.1"
   },
   "devDependencies": {
     "almin": "^0.10.0-1",

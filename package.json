@@ -9,10 +9,10 @@
     "lib/",
     "src/"
   ],
-  "name": "almin-devtools",
+  "name": "almin-kuker-devtools",
   "version": "0.4.0",
   "description": "Integrate almin into redux-devtools",
-  "main": "lib/almin-devtools.js",
+  "main": "lib/almin-kuker-devtools.js",
   "scripts": {
     "build": "cross-env NODE_ENV=production babel src --out-dir lib --source-maps",
     "watch": "babel src --out-dir lib --watch --source-maps",
@@ -28,12 +28,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/almin/almin-devtools.git"
+    "url": "https://github.com/almin/almin-kuker-devtools.git"
   },
   "bugs": {
-    "url": "https://github.com/almin/almin-devtools/issues"
+    "url": "https://github.com/almin/almin-kuker-devtools/issues"
   },
-  "homepage": "https://github.com/almin/almin-devtools",
+  "homepage": "https://github.com/almin/almin-kuker-devtools",
   "devDependencies": {
     "almin": "^0.13.0",
     "babel-cli": "^6.23.0",
