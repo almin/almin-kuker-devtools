@@ -1,90 +1,36 @@
-# almin-devtools
+# almin-kuker-devtools
 
-Integrate almin into [Redux DevTools Extension](https://github.com/zalmoxisus/redux-devtools-extension "Redux DevTools Extension").
-
-![ScreenShot](https://monosnap.com/file/rkqr6ZDlKdmAe49mvfw6NCI0gjJKjb.png)
+Integrate Almin into [kuker](https://github.com/krasimir/kuker "krasimir/kuker: Kick-ass browser extension to debug your apps").
 
 ## Features
 
 - Lets you inspect every state and UseCase/dispatch
 - See diff of the state
-- Import/Export log
 
 ## Installation
 
-1. Install [Redux DevTools Extension](https://github.com/zalmoxisus/redux-devtools-extension "Redux DevTools Extension") to browser
-2. Install `almin-devtools` via npm
-3. Connect almin to Redux DevTools Extension
+1. Install [krasimir/kuker: Kick-ass browser extension to debug your apps](https://github.com/krasimir/kuker "krasimir/kuker: Kick-ass browser extension to debug your apps")
 
-### Installation of DevTools extension
+Install [Kuker Chrome extension](https://chrome.google.com/webstore/detail/kuker/glgnienmpgmfpkigngkmieconbnkmlcn).
 
-#### 1. For Chrome
-
-- from [Chrome Web Store](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd);
-
-#### 2. For Firefox
-
-- from [Mozilla Add-ons](https://addons.mozilla.org/en-US/firefox/addon/remotedev/);
-
-#### 3. For Electron
-
-- just specify `REDUX_DEVTOOLS` in [`electron-devtools-installer`](https://github.com/GPMDP/electron-devtools-installer).
-
-#### 4. For other browsers and non-browser environment
-
-- use [`remote-redux-devtools`](https://github.com/zalmoxisus/remote-redux-devtools). 
-
-### Installation of almin-devtools
+2. Install `almin-kuker-devtools`
 
 Install with [npm](https://www.npmjs.com/):
 
-    npm install almin-devtools
+    npm install almin-kuker-devtools
     
 ## Usage
 
-Connect from your application to redux-devtools.
-
-```js
-import { Context, Dispatcher, StoreGroup } from "almin";
-import AlminDevTools from "almin-devtools"
-import { CounterStore } from "../store/CounterStore";
-const dispatcher = new Dispatcher();
-const store = new StoreGroup([new CounterStore()]);
-const appContext = new Context({
-    dispatcher,
-    store
-});
-// initialize devTools
-const devTools = new AlminDevTools(appContext);
-devTools.connect(); // connect to redux-devtools
-/* customize redux-devtools options
-devTools.connect({
-    features: {
-        pause: true, // start/pause recording of dispatched actions
-        lock: true, // lock/unlock dispatching actions and side effects
-        persist: false, // persist states on page reloading
-        export: true, // export history of actions in a file
-        import: 'almin-log', // import history of actions from a file
-        jump: false, // jump back and forth (time travelling)
-        skip: false, // skip (cancel) actions
-        reorder: false, // drag and drop actions in the history list
-        dispatch: false, // dispatch custom actions or action creators
-        test: true // generate tests for the selected actions
-    }
-});
-*/
-devTools.init(appContext.getState()); // record initial state
-```
-
-See [Methods (advanced API) · Redux DevTools Extension](http://extension.remotedev.io/docs/API/Methods.html "Methods (advanced API) · Redux DevTools Extension") for more details.
+- [ ] TODO
 
 ## Alternative
 
+- [almin/almin-devtools: Integrate almin into redux-devtools](https://github.com/almin/almin-devtools "almin/almin-devtools: Integrate almin into redux-devtools")
 - [almin/almin-logger: logger for Almin.js](https://github.com/almin/almin-logger "almin/almin-logger: logger for Almin.js")
 
 ## Changelog
 
-See [Releases page](https://github.com/almin/almin-devtools/releases).
+See [Releases page](https://github.com/almin/almin-kuker-devtools/releases).
 
 ## Running tests
 
@@ -96,7 +42,7 @@ Install devDependencies and Run `npm test`:
 
 Pull requests and stars are always welcome.
 
-For bugs and feature requests, [please create an issue](https://github.com/almin/almin-devtools/issues).
+For bugs and feature requests, [please create an issue](https://github.com/almin/almin-kuker-devtools/issues).
 
 1. Fork it!
 2. Create your feature branch: `git checkout -b my-new-feature`

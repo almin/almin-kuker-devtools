@@ -20,8 +20,5 @@ export class CounterStore extends Store {
     }
 
     getState() {
-        return {
-            counterState: this.state
-        }
-    }
+        return this.state    }
 }

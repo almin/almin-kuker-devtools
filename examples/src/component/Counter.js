@@ -54,7 +54,3 @@ export default class CounterComponent extends React.Component {
         );
     }
 }
-CounterComponent.propTypes = {
-    appContext: React.PropTypes.instanceOf(Context).isRequired,
-    counterState: React.PropTypes.instanceOf(CounterState).isRequired
-};
