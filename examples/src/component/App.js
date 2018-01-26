@@ -2,7 +2,7 @@
 "use strict";
 import React from "react";
 import { Context, Dispatcher, StoreGroup } from "almin";
-import AlminDevTools from "../../../src/almin-kuker-devtools"
+import { AlminKukerDevTools } from "../../../src/almin-devtools"
 import Counter from './Counter';
 import { CounterStore } from "../store/CounterStore";
 // a single dispatcher
@@ -15,7 +15,8 @@ const appContext = new Context({
     dispatcher,
     store
 });
-new AlminDevTools(appContext);
+const devTools = new AlminKukerDevTools();
+devTools.connect(appContext);
 export default class App extends React.Component {
     constructor(...args) {
         super(...args);

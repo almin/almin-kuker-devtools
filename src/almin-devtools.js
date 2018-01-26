@@ -1,17 +1,21 @@
 // MIT © 2017 azu
 "use strict";
 
-const sendToDevTools = ({ type, state }) => {
-    console.log({ type, state });
+const Color = {
+    system: "#33ccff",
+    user: "#009933",
+    error: "#cc0033"
+};
+const sendToDevTools = ({ type, label, state, color }) => {
     window.postMessage({
         kuker: true,
         type: type,
         origin: 'Almin',
-        label: type,
+        label: label || type,
         time: (new Date()).getTime(),
         state: { state },
-        icon: 'fa-money',
-        color: '#bada55'
+        icon: 'fa-link',
+        color: color
     }, '*');
 };
 /**
@@ -25,83 +29,115 @@ const sendToDevTools = ({ type, state }) => {
  *
  * @param {Context} alminContext
  */
-const contextToDevTools = (alminContext) => {
+const connectToDevTools = (alminContext) => {
+    const listeners = [];
     /**
      * @type {Object[]}
      */
     let currentDispatching = [];
+    const convertLabel = (type) => {
+
+    };
     const sendDispatched = () => {
         if (currentDispatching.length > 0) {
             const currentState = alminContext.getState();
             currentDispatching.forEach(payload => {
                 sendToDevTools({
                     type: payload.type,
-                    state: currentState
+                    label: payload.label,
+                    state: currentState,
+                    color: Color.user
                 });
             });
             currentDispatching = [];
         }
     };
-    alminContext.events.onDispatch((payload, meta) => {
-        currentDispatching.push(payload);
-    });
-    alminContext.onChange(() => {
-        sendDispatched()
-    });
-    alminContext.events.onBeginTransaction((payload, meta) => {
-        sendToDevTools({
-            type: `Transaction Begin:${meta.transaction.name}`,
-            state: alminContext.getState()
-        })
-    });
-    alminContext.events.onEndTransaction((payload, meta) => {
-        sendToDevTools({
-            type: `Transaction End:${meta.transaction.name}`,
-            state: alminContext.getState()
-        });
-    });
+    listeners.push(
+        alminContext.events.onDispatch((payload, meta) => {
 
-    alminContext.events.onDidExecuteEachUseCase(() => {
-        sendDispatched();
-    });
-    alminContext.events.onCompleteEachUseCase((payload, meta) => {
-        requestAnimationFrame(() => {
-            sendToDevTools({
-                type: `UseCase:${meta.useCase.name}`,
-                state: alminContext.getState()
+            currentDispatching.push({
+                type: payload.type,
+                label: `${meta.useCase.name} update Store`
             });
-        });
-    });
-    alminContext.events.onErrorDispatch((payload) => {
-        sendToDevTools({
-            type: "Error",
-            state: alminContext.getState()
-        });
-    });
-};
-
-
-const DefaultDevToolsOptions = {
-    features: {
-        pause: true, // start/pause recording of dispatched actions
-        lock: true, // lock/unlock dispatching actions and side effects
-        persist: false, // persist states on page reloading
-        export: true, // export history of actions in a file
-        import: 'almin-log', // import history of actions from a file
-        jump: false, // jump back and forth (time travelling)
-        skip: false, // skip (cancel) actions
-        reorder: false, // drag and drop actions in the history list
-        dispatch: false, // dispatch custom actions or action creators
-        test: true // generate tests for the selected actions
+        })
+    );
+    listeners.push(
+        alminContext.onChange(() => {
+            sendDispatched();
+        })
+    );
+    listeners.push(
+        alminContext.events.onBeginTransaction((payload, meta) => {
+            sendToDevTools({
+                type: `Transaction Begin:${meta.transaction.name}`,
+                state: alminContext.getState(),
+                color: Color.system
+            })
+        })
+    );
+    listeners.push(
+        alminContext.events.onEndTransaction((payload, meta) => {
+            sendToDevTools({
+                type: `Transaction End:${meta.transaction.name}`,
+                state: alminContext.getState(),
+                color: Color.system
+            });
+        })
+    );
+    listeners.push(
+        alminContext.events.onWillExecuteEachUseCase((payload, meta) => {
+            sendToDevTools({
+                type: `Start UseCase:${meta.useCase.name}`,
+                state: alminContext.getState(),
+                color: Color.system
+            });
+        })
+    );
+    listeners.push(
+        alminContext.events.onDidExecuteEachUseCase(() => {
+            sendDispatched();
+        })
+    );
+    listeners.push(
+        alminContext.events.onCompleteEachUseCase((payload, meta) => {
+            requestAnimationFrame(() => {
+                sendToDevTools({
+                    type: `Finish UseCase:${meta.useCase.name}`,
+                    state: alminContext.getState(),
+                    color: Color.system
+                });
+            });
+        })
+    );
+    listeners.push(
+        alminContext.events.onErrorDispatch((payload) => {
+            sendToDevTools({
+                type: "Error",
+                state: alminContext.getState(),
+                color: Color.error
+            });
+        })
+    );
+    return () => {
+        listeners.forEach(listener => listener());
     }
 };
 
-module.exports = class AlminDevTools {
+
+export class AlminKukerDevTools {
+    constructor(alminContext) {
+    }
+
     /**
      * @param {Context} alminContext
      */
-    constructor(alminContext) {
-        this.alminContext = alminContext;
-        contextToDevTools(this.alminContext);
+    connect(alminContext) {
+        this.releaseHandler = connectToDevTools(alminContext);
     }
-};
+
+    disconnect() {
+        if (typeof this.releaseHandler === "function") {
+            this.releaseHandler();
+        }
+    }
+}
